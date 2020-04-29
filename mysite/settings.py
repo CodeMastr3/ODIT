@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+# https://www.youtube.com/watch?v=ZTBexYIIOP8
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,11 +37,17 @@ LOGIN_URL="/login"
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
+	'django.contrib.contenttypes',
+	'django.contrib.sites',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
+
+	'allauth',
+	'allauth.account',
+	'allauth.socialaccount',
+	'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +129,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Django allauth settings
+AUTHENTICATION_BACKENDS = (
+	# Needed to login by username in Django admin, regardless of 'allauth'
+	'django.contrib.auth.backends.ModelBackend',
+	
+	# 'allauth' specific authenication methods, such as login by email
+	'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

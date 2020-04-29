@@ -4,15 +4,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Create your models here.
-class Issue_Model(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=240, null=True)
-    issue_type = models.IntegerField()
-    date_created = models.DateField(auto_now_add=True)
-    assigned_user = models.CharField(max_length=50, null=True)
-    affected_user = models.CharField(max_length=50, null=True)
-    is_solved = models.BooleanField(null=True) # 0 for unsolved, 1 for solved
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(null=True, max_length=500, blank=True)
@@ -28,3 +19,12 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+class Issue_Model(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=240, null=True)
+    issue_type = models.IntegerField()
+    date_created = models.DateField(auto_now_add=True)
+    assigned_user = models.CharField(max_length=50, null=True)
+    affected_user = models.ForeignKey(Profile, max_length=50, null=True, on_delete=models.PROTECT)
+    is_solved = models.BooleanField(null=True) # 0 for unsolved, 1 for solved

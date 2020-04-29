@@ -20,12 +20,12 @@ def index(request, page=0):
 @login_required
 def submit(request):
 	if request.method == "POST":
-		form = forms.IssueForm(request.POST)
+		form = forms.IssueForm(data=request.POST, request=request)
 		if form.is_valid():
 			form.save()
 			form = forms.IssueForm()
 	else:
-		form = forms.IssueForm()
+		form = forms.IssueForm(request=request)
 
 	context = {
 		"title":"ODIT - Submit Request",
@@ -36,7 +36,7 @@ def submit(request):
 @login_required
 def viewissues(request):
 	if request.method == "POST":
-		form = forms.IssueFilter(request.POST)
+		form = forms.IssueFilter(data=request.POST, request=request)
 		if form.is_valid():
 			issues_list = models.Issue_Model.objects.all()
 			if (form.cleaned_data['keyword']):
@@ -51,7 +51,7 @@ def viewissues(request):
 					Q(issue_type__exact=form.cleaned_data['issue_type'])
 				)
 		else:
-			form = forms.IssueFilter()
+			form = forms.IssueFilter(request=request)
 			issues_list = models.Issue_Model.objects.all()
 	else:
 		form = forms.IssueFilter()
