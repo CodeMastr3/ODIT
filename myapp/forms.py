@@ -33,10 +33,6 @@ ISSUE_CHOICES = [
 ]
 class IssueForm(forms.Form):
 
-	def __init__(self, *args, **kwargs):
-		self.request = kwargs.pop("request")
-		super(IssueForm, self).__init__(*args, **kwargs)
-
 	title = forms.CharField(
 		widget = forms.TextInput(
 			attrs={'class': 'form-control'}

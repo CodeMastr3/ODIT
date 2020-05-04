@@ -25,12 +25,12 @@ def index(request, page=0):
 @login_required
 def submit(request):
 	if request.method == "POST":
-		form = forms.IssueForm(data=request.POST, request=request)
+		form = forms.IssueForm(request.POST)
 		if form.is_valid():
 			form.save(request.user) #pass in user for foreign key relationship
 			form = forms.IssueForm()
 	else:
-		form = forms.IssueForm(request=request)
+		form = forms.IssueForm()
 
 	context = {
 		"title":"ODIT - Submit Request",
@@ -348,4 +348,3 @@ def edit_ticket(request, id):
 			return render(request, "editticket.html", context=context)
 		else:
 			return redirect("/viewmyissues")
-			
